@@ -1,0 +1,79 @@
+<section>
+    {{show}}
+<div [ngSwitch]="show">
+    
+    <div *ngSwitchCase="'default'">
+        
+        <button mat-raised-button color="primary" (click)="doFirst('execute')">Execute TestCase</button>
+        <button mat-raised-button color="primary" (click)="doFirst('execute')">Show All Results</button>
+    </div>
+    
+    <div *ngSwitchCase="'execute'" [align]="'center'">
+       
+       <mat-horizontal-stepper #executeTestCase >
+        
+    
+            <mat-step [stepControl]="firstFormGroup" [label]="'Select TestCase'"  [editable]="!testCaseselected" [completed]="testCaseselected">
+                <div >
+                    <b>Selected TestCase File: </b>{{testCaseObj.testCaseFile}}
+                </div>
+                <form [formGroup]="firstFormGroup">
+                    
+                    <button mat-raised-button color="primary" (click)="fileInput.click()">
+                            
+                        <span>Select TestCase</span>
+                       
+                            <input  #fileInput type="file" class="file-upload" (change)="testCaseSelectionChanged($event)" style="display:none;" formControlName="testCasefileCtrl" required/>
+                    
+                      </button>
+                    
+                    <div>
+                        <br>
+                        <button mat-raised-button color="primary" matStepperNext [disabled]="!testCaseObj.testCaseFile" >Next</button>
+                    </div>
+                </form>
+            </mat-step>
+            <mat-step [stepControl]="secondFormGroup" [label]="'Select Test Data'" [editable]="!testDataselected" [completed]="testDataselected">
+                <div >
+                    <b>Selected Test Data File: </b>{{testCaseObj.testDataFile}}
+                </div>
+                <form [formGroup]="secondFormGroup">
+                    <button mat-raised-button color="primary" (click)="fileInput.click()">
+                            
+                        <span>Select Test Data</span>
+                        <input #fileInput type="file" class="file-upload" (change)="testDataSelectionChanged($event)" required style="display:none;" />
+                      </button>
+                    
+                    <div><br>
+                        <button mat-raised-button color="sec" matStepperNext (click)="validateTestData()">Next</button> &nbsp;&nbsp;
+                        <button mat-raised-button color="primary" matStepperPrevious>Back</button>
+                    </div>
+                </form>
+            </mat-step>
+            <mat-step [stepControl]="thirdFormGroup" #executeTC [label]="'Execute TestCase'" [editable]="!executed" [completed]="executed">
+                
+                    <div>
+                        <div [hidden]="showProgress">
+                            <mat-spinner *ngIf="showProgress === true"></mat-spinner><br><br>
+                        </div>
+                        <button mat-raised-button color="primary" (click)="fireTestCase(executeTestCase)">Run TestCase</button>
+                        <button mat-raised-button color="primary" matStepperPrevious>Back</button>
+                    </div>
+                    
+            </mat-step>
+            <mat-step [stepControl]="finalFormGroup" [label]="'Complete'" [completed]="'Done'">
+                
+                <div>
+                    <button mat-raised-button color="primary" (click) = "goHome()">Home</button> 
+                </div>
+           
+        </mat-step>
+       </mat-horizontal-stepper>
+    </div>
+    <div *ngSwitchCase="'results_all'">
+        
+        <button mat-raised-button color="primary" (click)="doFirst('execute')">3</button>
+        <button mat-raised-button color="primary" (click)="doFirst('execute')">4</button>
+    </div>
+</div>
+</section>
